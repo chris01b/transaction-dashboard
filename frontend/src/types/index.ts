@@ -25,3 +25,19 @@ export interface TransactionGroup {
 }
 
 export type GroupBy = 'merchant' | 'mcc' | 'currency';
+
+export interface PaginationMetadata {
+  total: number;
+  page: number;
+  limit: number;
+  pages: number;
+  hasMore?: boolean;
+  nextPageToken?: string | null;
+  prevPageToken?: string | null;
+  has_more?: boolean; // For backward compatibility
+}
+
+export interface PaginatedResponse<T> {
+  data: T[];
+  pagination: PaginationMetadata;
+}

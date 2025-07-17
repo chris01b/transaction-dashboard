@@ -1,7 +1,7 @@
 import { feathers } from '@feathersjs/feathers';
 import socketio from '@feathersjs/socketio-client';
 import { io, Socket } from 'socket.io-client';
-import { TransactionGroup } from '@/types';
+import { TransactionGroup, PaginatedResponse } from '@/types/index';
 
 // Create a Socket.IO client with proper configuration
 const socket: Socket = io(import.meta.env.VITE_API_URL || 'http://localhost:3030', {
@@ -25,10 +25,21 @@ export const client = feathers()
 
 export const transactionsService = client.service('transactions');
 
-export const fetchTransactionGroups = async (groupBy: string = 'merchant'): Promise<TransactionGroup[]> => {
-  return await transactionsService.find({
-    query: { group_by: groupBy }
+export const fetchTransactionGroups = async (
+  groupBy: string = 'merchant',
+  page: number = 1,
+  limit: number = 10
+): Promise<PaginatedResponse<TransactionGroup>> => {
+  const response = await transactionsService.find({
+    query: { 
+      group_by: groupBy,
+      $page: page,
+      $limit: limit,
+      $sort: { created: -1 } // Sort by most recent first
+    }
   });
+  
+  return response;
 };
 
 export const fetchTransactionGroup = async (label: string, groupBy: string = 'merchant'): Promise<TransactionGroup | null> => {
