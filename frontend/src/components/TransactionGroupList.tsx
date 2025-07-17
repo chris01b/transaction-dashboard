@@ -7,12 +7,28 @@ interface TransactionGroupListProps {
   groups: TransactionGroup[];
   groupBy: GroupBy;
   onGroupClick: (group: TransactionGroup) => void;
+  isLoading?: boolean;
+  error?: string | null;
+  onRetry?: () => void;
 }
+
+const SkeletonLoader = () => (
+  <div className="space-y-4">
+    {[1, 2, 3, 4, 5].map((i) => (
+      <div key={i} className="card animate-pulse">
+        <div className="h-20 rounded-lg bg-gray-100"></div>
+      </div>
+    ))}
+  </div>
+);
 
 export const TransactionGroupList: React.FC<TransactionGroupListProps> = ({
   groups,
   groupBy,
-  onGroupClick
+  onGroupClick,
+  isLoading = false,
+  error = null,
+  onRetry,
 }) => {
   const getGroupLabel = (group: TransactionGroup) => {
     switch (groupBy) {
@@ -24,6 +40,34 @@ export const TransactionGroupList: React.FC<TransactionGroupListProps> = ({
         return group.label;
     }
   };
+
+  if (isLoading) {
+    return <SkeletonLoader />;
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-8">
+        <div className="text-red-500 mb-2">Error loading transaction groups</div>
+        {onRetry && (
+          <button
+            onClick={onRetry}
+            className="mt-2 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+          >
+            Retry
+          </button>
+        )}
+      </div>
+    );
+  }
+
+  if (groups.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-500">No transactions found</p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
