@@ -1,0 +1,29 @@
+{
+  "name": "lithic-backend",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/app.ts",
+    "build": "tsc",
+    "start": "node dist/app.js"
+  },
+  "dependencies": {
+    "@feathersjs/authentication": "^5.0.29",
+    "@feathersjs/authentication-local": "^5.0.29",
+    "@feathersjs/feathers": "^5.0.29",
+    "@feathersjs/koa": "^5.0.29",
+    "@feathersjs/schema": "^5.0.29",
+    "@feathersjs/socketio": "^5.0.29",
+    "axios": "^1.7.7",
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/dotenv": "^8.2.3",
+    "@types/node": "^20.14.0",
+    "tsx": "^4.19.1",
+    "typescript": "^5.5.2"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "lithic-transaction-app",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently -k -n \"backend,frontend\" -c \"green,cyan\" \"pnpm --filter lithic-backend dev\" \"pnpm --filter lithic-frontend dev\"",
+    "build": "pnpm --filter lithic-backend build && pnpm --filter lithic-frontend build",
+    "start": "pnpm --filter lithic-backend start"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
