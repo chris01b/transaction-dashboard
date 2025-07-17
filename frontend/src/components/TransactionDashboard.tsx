@@ -45,11 +45,13 @@ export const TransactionDashboard: React.FC = () => {
     setSelectedGroup(null);
   };
 
-  if (loading) {
+  // Show full page loading only on initial load
+  if (loading && groups.length === 0) {
     return <LoadingSpinner />;
   }
 
-  if (error) {
+  // Show full page error only if we have no data to display
+  if (error && groups.length === 0) {
     return <ErrorMessage message={error} onRetry={loadTransactionGroups} />;
   }
 
@@ -67,20 +69,29 @@ export const TransactionDashboard: React.FC = () => {
 
         {!selectedGroup ? (
           <>
-            <GroupingTabs
-              activeGroupBy={groupBy}
-              onGroupingChange={handleGroupingChange}
-            />
+            <div className="mb-6">
+              <GroupingTabs
+                activeGroupBy={groupBy}
+                onGroupingChange={handleGroupingChange}
+                disabled={loading}
+              />
+            </div>
             <TransactionGroupList
               groups={groups}
               groupBy={groupBy}
               onGroupClick={handleGroupClick}
+              isLoading={loading}
+              error={error}
+              onRetry={loadTransactionGroups}
             />
           </>
         ) : (
           <TransactionDetail
             group={selectedGroup}
             onBackClick={handleBackClick}
+            isLoading={loading}
+            error={error}
+            onRetry={loadTransactionGroups}
           />
         )}
       </div>
