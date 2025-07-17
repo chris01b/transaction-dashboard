@@ -25,8 +25,7 @@ export class LithicService {
       
       return response.data.data || [];
     } catch (error) {
-      console.error('Error fetching transactions:', error);
-      throw new Error('Failed to fetch transactions from Lithic API');
+      throw new Error(`Failed to fetch transactions: ${error instanceof Error ? error.message : 'Unknown error'}`);
     }
   }
 }
